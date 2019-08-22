@@ -5,8 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>falling worlds</title>
+    <style>
+        #game {
+            height: 100vh;
+            width: 100vw;
+            background-color: red;
+            position: relative;
+        }
+        .word {
+            position: absolute;
+            top: -10px;
+            font-size: 1.4rem;
+        }
+        .word.active {
+            transform: translateY(101vh);
+        }
+    
+    </style>
 </head>
 <body>
+    <div id="game">
+
+    </div>
     <script src="./index.js"></script>
 </body>
 </html>
