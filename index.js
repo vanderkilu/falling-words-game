@@ -57,7 +57,7 @@
             this.wordObjs = this.wordTexts.map(w => new Word(w))
         }
         attachListeners() {
-            //
+            document.addEventListener('keypress', checkWordMatch)
         }
         start() {
             clearInterval(this.wordMoveTimer)
