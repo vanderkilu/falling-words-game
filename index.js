@@ -3,7 +3,7 @@
         'explosion': null,
         'click': null
     }
-
+    fallingWords = []
     const helpers = {
         
     }
@@ -53,6 +53,8 @@
             this.word.parentNode.removeChild(this.word)
         }
         onLand() {
+            const index = fallingWords.indexOf(this.word)
+            fallingWords.splice(index, 1)
             this.destroy()
         }
         isCompleted() {
@@ -84,17 +86,22 @@
             this.wordMovetimer = null
             this.wordTexts = ['mango', 'apple', 'banana', 'orange']
             this.wordObjs = this.wordTexts.map(w => new Word(w))
-            this.fallingWords = []
             this.attachListeners()
-            createAudios(['explosion'])
+            createAudios(['explosion', 'tap'])
         }
         attachListeners() {
             document.addEventListener('keydown', this.checkWordMatch.bind(this))
         }
         checkWordMatch(e) {
-            this.fallingWords.forEach((word)=> {
-                //check if our current word has all letters matched
-                if (word.isCompleted()) word.destroy() 
+            // playSound('tap')
+
+            fallingWords.forEach((word)=> {
+                // check if our current word has all letters matched
+                if (word.isCompleted()) {
+                    const index = fallingWords.indexOf(word)
+                    fallingWords.splice(index, 1)
+                    word.destroy()
+                } 
 
                 const hasMatched = word.getCurrentLetter() === e.key
                 const letters = word.word.childNodes
@@ -111,14 +118,15 @@
                     }
                 }
             })
+
         }
         start() {
             clearInterval(this.wordMoveTimer)
             this.wordMoveTimer = setInterval(()=> {
                 const word = this.wordObjs.shift()
-                this.fallingWords.push(word)
                 if (!word) clearInterval(this.wordMoveTimer)
                 else {
+                    fallingWords.push(word)
                     word.move()
                 }
             }, 1000)

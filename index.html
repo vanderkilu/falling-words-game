@@ -4,18 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <title>falling worlds</title>
     <style>
+        html {
+            font-size: 62.5%;
+            box-sizing: border-box;
+        }
+        body {
+            background: #41B3A3;
+            font-family: 'Raleway', sans-serif;
+        }
         #game {
-            height: 100vh;
+            height: 90vh;
             width: 100vw;
-            background-color: red;
             position: relative;
         }
         .word {
             position: absolute;
             top: -50px;
-            font-size: 1.4rem;
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: white;
         }
         .word.active {
             transform: translateY(101vh);
