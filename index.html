@@ -17,7 +17,7 @@
         }
         #game {
             height: 90vh;
-            width: 100vw;
+            width: 90vw;
             position: relative;
         }
         .word {
@@ -32,6 +32,15 @@
         }
         .letter.active {
             color: grey;
+        }
+        .missile {
+            position: absolute;
+            bottom: -10px;
+            width: 2rem;
+            height: 2rem;
+        }
+        .missile.active {
+            transform: translateY(-90vh)
         }
     
     </style>

@@ -5,7 +5,7 @@
     }
     fallingWords = []
     const helpers = {
-        
+
     }
     class Word {
         constructor(wordText) {
@@ -15,7 +15,9 @@
             this.pos = 0
             this.create()
             this.setInitialPosition()
-            this.attachListeners()          
+            this.attachListeners()
+
+            this.missile = new Missile(this.word)
         }
         create() {
             const word = document.createElement('div')
@@ -27,15 +29,15 @@
             word.innerHTML = wordHTML
             this.word = word
 
-            const game  = document.querySelector('#game')
+            const game = document.querySelector('#game')
             game.appendChild(word)
         }
         setInitialPosition() {
             const wordDim = this.word.getBoundingClientRect()
             const offset = 50
-            let randomX = (Math.random() * window.innerWidth) - wordDim.width-offset
+            let randomX = (Math.random() * window.innerWidth) - wordDim.width - offset
             if (randomX <= 0) {
-                randomX += wordDim.width + offset 
+                randomX += wordDim.width + offset
             }
             this.word.style.left = randomX + 'px'
         }
@@ -53,15 +55,43 @@
             this.word.parentNode.removeChild(this.word)
         }
         onLand() {
-            const index = fallingWords.indexOf(this.word)
-            fallingWords.splice(index, 1)
             this.destroy()
         }
         isCompleted() {
-            return this.wordText.length-1 === this.pos
+            return this.wordText.length - 1 === this.pos
         }
         getCurrentLetter() {
             return this.wordText.charAt(this.pos)
+        }
+    }
+
+    class Missile {
+        constructor (word) {
+            this.left = 0
+            this.missile = null
+            this.word = word
+            this.create()
+        }
+        create() {
+            const game = document.querySelector('#game')
+            const missile = document.createElement('img')
+            missile.src= 'missile.svg'
+            missile.className = 'missile'
+            this.missile = missile
+            game.appendChild(missile)
+        }
+        setLeftPosition() {
+            const wordDim = this.word.getBoundingClientRect()
+            this.missile.left = (wordDim.left + wordDim.width/2 ) + 'px' 
+        }
+        move() {
+            this.setLeftPosition()
+            const missileSpeed = 3
+            this.missile.style.transition = `all ${missileSpeed}s linear`
+            this.missile.classList.add('active')
+        }
+        checkCollision() {
+            //
         }
     }
 
@@ -81,6 +111,8 @@
         }
     }
 
+
+
     class GameWorld {
         constructor() {
             this.wordMovetimer = null
@@ -93,15 +125,16 @@
             document.addEventListener('keydown', this.checkWordMatch.bind(this))
         }
         checkWordMatch(e) {
-            // playSound('tap')
+            playSound('tap')
 
-            fallingWords.forEach((word)=> {
+            fallingWords.forEach((word) => {
                 // check if our current word has all letters matched
                 if (word.isCompleted()) {
                     const index = fallingWords.indexOf(word)
                     fallingWords.splice(index, 1)
-                    word.destroy()
-                } 
+                    word.missile.move()
+                    // word.destroy()
+                }
 
                 const hasMatched = word.getCurrentLetter() === e.key
                 const letters = word.word.childNodes
@@ -122,19 +155,19 @@
         }
         start() {
             clearInterval(this.wordMoveTimer)
-            this.wordMoveTimer = setInterval(()=> {
+            this.wordMoveTimer = setInterval(() => {
                 const word = this.wordObjs.shift()
                 if (!word) clearInterval(this.wordMoveTimer)
                 else {
                     fallingWords.push(word)
                     word.move()
                 }
-            }, 1000)
+            }, 3000)
         }
-        
+
     }
 
     const game = new GameWorld()
     game.start()
-   
+
 })()
