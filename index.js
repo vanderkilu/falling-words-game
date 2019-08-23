@@ -82,7 +82,7 @@
         }
         setLeftPosition() {
             const wordDim = this.word.getBoundingClientRect()
-            this.missile.left = (wordDim.left + wordDim.width/2 ) + 'px' 
+            this.missile.style.left = (wordDim.left + wordDim.width/2 ) + 'px' 
         }
         move() {
             this.setLeftPosition()
