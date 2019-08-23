@@ -1,4 +1,9 @@
 (function () {
+    const sounds = {
+        'explosion': null,
+        'click': null
+    }
+
     const helpers = {
         
     }
@@ -44,6 +49,7 @@
             this.word.addEventListener('transitionend', this.onLand.bind(this))
         }
         destroy() {
+            playSound('explosion')
             this.word.parentNode.removeChild(this.word)
         }
         onLand() {
@@ -57,6 +63,22 @@
         }
     }
 
+    function createAudio(fileName) {
+        const audio = new Audio(`sounds/${fileName}.mp3`)
+        sounds[fileName] = audio
+    }
+
+    function playSound(fileName) {
+        const sound = sounds[fileName]
+        sound.currentTime = 0
+        sound.play()
+    }
+    function createAudios(fileNames) {
+        for (fileName of fileNames) {
+            createAudio(fileName)
+        }
+    }
+
     class GameWorld {
         constructor() {
             this.wordMovetimer = null
@@ -64,6 +86,7 @@
             this.wordObjs = this.wordTexts.map(w => new Word(w))
             this.fallingWords = []
             this.attachListeners()
+            createAudios(['explosion'])
         }
         attachListeners() {
             document.addEventListener('keydown', this.checkWordMatch.bind(this))
@@ -100,6 +123,7 @@
                 }
             }, 1000)
         }
+        
     }
 
     const game = new GameWorld()
