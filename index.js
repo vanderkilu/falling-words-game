@@ -167,7 +167,7 @@
 
     }
 
-    const game = new GameWorld()
-    game.start()
+    // const game = new GameWorld()
+    // game.start()
 
 })()
