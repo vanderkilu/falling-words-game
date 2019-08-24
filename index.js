@@ -19,7 +19,7 @@
             this.setInitialPosition()
             this.attachListeners()
 
-            this.missile = new Missile(this.word)
+            this.missile = new Missile(this)
         }
         create() {
             const word = document.createElement('div')
@@ -83,7 +83,7 @@
             game.appendChild(missile)
         }
         setLeftPosition() {
-            const wordDim = this.word.getBoundingClientRect()
+            const wordDim = this.word.word.getBoundingClientRect()
             this.missile.style.left = (wordDim.left + wordDim.width/2 ) + 'px' 
         }
         move() {
@@ -94,11 +94,13 @@
         }
         checkCollision() {
             const missileDimTop = this.missile.getBoundingClientRect().top
-            const wordDimTop = this.word.getBoundingClientRect().bottom
+            const wordDimTop = this.word.word.getBoundingClientRect().bottom
             const hasCollided = missileDimTop < wordDimTop
             if (hasCollided) {
+                const index = missiles.indexOf(this.missile)
+                missiles.splice(index, 1)
                 this.destroy()
-                // this.word.destroy()
+                this.word.destroy()
             }
         }
         destroy() {
@@ -187,7 +189,7 @@
 
     }
 
-    // const game = new GameWorld()
-    // game.start()
+    const game = new GameWorld()
+    game.start()
 
 })()
