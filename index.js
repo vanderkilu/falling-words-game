@@ -3,7 +3,9 @@
         'explosion': null,
         'click': null
     }
-    fallingWords = []
+    const fallingWords = []
+    const missiles = []
+
     const helpers = {
 
     }
@@ -58,7 +60,7 @@
             this.destroy()
         }
         isCompleted() {
-            return this.wordText.length - 1 === this.pos
+            return this.wordText.length-1 === this.pos
         }
         getCurrentLetter() {
             return this.wordText.charAt(this.pos)
@@ -91,7 +93,16 @@
             this.missile.classList.add('active')
         }
         checkCollision() {
-            //
+            const missileDimTop = this.missile.getBoundingClientRect().top
+            const wordDimTop = this.word.getBoundingClientRect().bottom
+            const hasCollided = missileDimTop < wordDimTop
+            if (hasCollided) {
+                this.destroy()
+                // this.word.destroy()
+            }
+        }
+        destroy() {
+            this.missile.parentNode.removeChild(this.missile)
         }
     }
 
@@ -110,6 +121,14 @@
             createAudio(fileName)
         }
     }
+    function checkCollisions() {
+        if (missiles.length > 0) {
+            for (missile of missiles) {
+                missile.checkCollision()
+            }
+        } 
+        requestAnimationFrame(checkCollisions)
+    }
 
 
 
@@ -120,6 +139,7 @@
             this.wordObjs = this.wordTexts.map(w => new Word(w))
             this.attachListeners()
             createAudios(['explosion', 'tap'])
+            checkCollisions()
         }
         attachListeners() {
             document.addEventListener('keydown', this.checkWordMatch.bind(this))
@@ -133,7 +153,7 @@
                     const index = fallingWords.indexOf(word)
                     fallingWords.splice(index, 1)
                     word.missile.move()
-                    // word.destroy()
+                    missiles.push(word.missile)
                 }
 
                 const hasMatched = word.getCurrentLetter() === e.key
