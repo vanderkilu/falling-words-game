@@ -149,12 +149,24 @@
 
     }
 
+    function generateRandomWord(words) {
+       
+
+    }
+
 
 
     class GameWorld {
         constructor() {
             this.wordMovetimer = null
-            this.wordTexts = ['mango', 'apple', 'banana', 'orange']
+            this.wordTexts = ['mango', 'apple', 'banana', 'orange', 
+                            'pineapple', 'pear', 'okro', 'cinnamon',
+                            'pawpaw', 'citadel', 'money', 'freeze', 'argentina',
+                            'willingly', 'freedom', 'focus', 'generate',
+                            'succinitly', 'mannered', 'polysaccharide',
+                            'snow', 'philipine', 'saturn', 'campaign',
+                            'candidate', 'challenge', 'character', 'community',
+                            ]
             this.wordObjs = this.wordTexts.map(w => new Word(w))
             this.attachListeners()
             createAudios(['explosion', 'tap'])
@@ -162,6 +174,12 @@
         }
         attachListeners() {
             document.addEventListener('keydown', this.checkWordMatch.bind(this))
+        }
+        generateRandomWord() {
+            const randomIndex = Math.floor(Math.random() * this.wordObjs.length)
+            const word =this.wordObjs[randomIndex]
+            this.wordObjs.splice(randomIndex, 1)
+            return word
         }
         checkWordMatch(e) {
             playSound('tap')
@@ -195,7 +213,7 @@
         start() {
             clearInterval(this.wordMoveTimer)
             this.wordMoveTimer = setInterval(() => {
-                const word = this.wordObjs.shift()
+                const word = this.generateRandomWord()
                 if (!word) clearInterval(this.wordMoveTimer)
                 else {
                     fallingWords.push(word)
