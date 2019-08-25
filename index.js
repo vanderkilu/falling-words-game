@@ -5,10 +5,7 @@
     }
     const fallingWords = []
     const missiles = []
-
-    const helpers = {
-
-    }
+    
     class Word {
         constructor(wordText) {
             this.word = null
@@ -149,13 +146,6 @@
 
     }
 
-    function generateRandomWord(words) {
-       
-
-    }
-
-
-
     class GameWorld {
         constructor() {
             this.wordMovetimer = null
@@ -177,7 +167,7 @@
         }
         generateRandomWord() {
             const randomIndex = Math.floor(Math.random() * this.wordObjs.length)
-            const word =this.wordObjs[randomIndex]
+            const word = this.wordObjs[randomIndex]
             this.wordObjs.splice(randomIndex, 1)
             return word
         }
@@ -224,7 +214,7 @@
 
     }
 
-    const game = new GameWorld()
-    game.start()
+    // const game = new GameWorld()
+    // game.start()
 
 })()
