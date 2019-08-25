@@ -88,21 +88,21 @@
         }
         move() {
             this.setLeftPosition()
-            const missileSpeed = 3
+            const missileSpeed = 1.5
             this.missile.style.transition = `all ${missileSpeed}s linear`
             this.missile.classList.add('active')
         }
         checkCollision() {
-            const missileDim = this.missile.getBoundingClientRect()
-            const missileDimTop = missileDim.top
-            const wordDimTop = this.word.word.getBoundingClientRect().bottom
+            const missileDimTop = this.missile.getBoundingClientRect().top
+            const wordDim = this.word.word.getBoundingClientRect()
+            const wordDimMid = wordDim.top + wordDim.height/2
 
-            if (missileDimTop < wordDimTop) {
+            if (missileDimTop < wordDimMid) {
                 const index = missiles.indexOf(this.missile)
                 missiles.splice(index, 1)
                 this.destroy()
                 this.word.destroy()
-                createExplosion(missileDim.left,missileDimTop, missileDim.width)
+                createExplosion(wordDim.left, wordDim.top, wordDim.width)
             }
         }
         destroy() {
@@ -139,7 +139,7 @@
         img.src = 'explosion.gif'
         img.className = 'explosion'
 
-        img.style.left = (x - w/2) + 'px'
+        img.style.left = x  + 'px'
         img.style.top = y + 'px'
 
         const game = document.querySelector('#game')
