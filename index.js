@@ -93,14 +93,16 @@
             this.missile.classList.add('active')
         }
         checkCollision() {
-            const missileDimTop = this.missile.getBoundingClientRect().top
+            const missileDim = this.missile.getBoundingClientRect()
+            const missileDimTop = missileDim.top
             const wordDimTop = this.word.word.getBoundingClientRect().bottom
-            const hasCollided = missileDimTop < wordDimTop
-            if (hasCollided) {
+
+            if (missileDimTop < wordDimTop) {
                 const index = missiles.indexOf(this.missile)
                 missiles.splice(index, 1)
                 this.destroy()
                 this.word.destroy()
+                createExplosion(missileDim.left,missileDimTop, missileDim.width)
             }
         }
         destroy() {
@@ -130,6 +132,21 @@
             }
         } 
         requestAnimationFrame(checkCollisions)
+    }
+
+    function createExplosion(x, y, w) {
+        const img = new Image(50,50)
+        img.src = 'explosion.gif'
+        img.className = 'explosion'
+
+        img.style.left = (x - w/2) + 'px'
+        img.style.top = y + 'px'
+
+        const game = document.querySelector('#game')
+        game.appendChild(img)
+
+        setTimeout(()=> game.removeChild(img), 800)
+
     }
 
 
